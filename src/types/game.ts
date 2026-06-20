@@ -38,5 +38,7 @@ export interface GameState {
 }
 
 export const STORAGE_KEY = 'hundred-one-game-state'
+export const CONFIG_STORAGE_KEY = 'hundred-one-game-config'
+export const CONFIG_NAME_STORAGE_KEY = 'hundred-one-game-config-name'
 
 export const MAX_STRIKES = 3

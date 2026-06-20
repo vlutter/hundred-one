@@ -1,91 +1,40 @@
-import gameConfig from '../game-config.json'
-import { AnswerBoard } from './components/AnswerBoard/AnswerBoard'
-import { GameControls } from './components/GameControls/GameControls'
-import { ScoreBoard } from './components/ScoreBoard/ScoreBoard'
-import { StrikeDisplay } from './components/StrikeDisplay/StrikeDisplay'
-import { useGameState } from './hooks/useGameState'
+import { useCallback, useState } from 'react'
+import { ConfigLoader } from './components/ConfigLoader/ConfigLoader'
+import { GameView } from './components/GameView/GameView'
+import { loadStoredConfig, saveConfig } from './utils/configStorage'
 import type { GameConfig } from './types/game'
-import './App.scss'
-
-const config = gameConfig as GameConfig
 
 function App() {
-  const {
-    state,
-    resetGame,
-    setActiveTeam,
-    setTeamName,
-    toggleAnswer,
-    addStrike,
-    awardPoints,
-    nextQuestion,
-  } = useGameState(config)
+  const [configEntry, setConfigEntry] = useState(() => loadStoredConfig())
+  const [showLoader, setShowLoader] = useState(false)
+  const [configKey, setConfigKey] = useState(0)
 
-  const round = config.rounds[state.currentRoundIndex]
-  const question = round?.questions[state.currentQuestionIndex]
+  const handleLoadConfig = useCallback((config: GameConfig, name: string) => {
+    saveConfig(config, name)
+    setConfigEntry({ config, name })
+    setShowLoader(false)
+    setConfigKey((key) => key + 1)
+  }, [])
 
-  if (!round || !question) {
-    return (
-      <div className="app">
-        <p>Конфигурация игры пуста. Заполните game-config.json</p>
-      </div>
-    )
+  const handleChangeConfig = useCallback(() => {
+    setShowLoader(true)
+  }, [])
+
+  const handleCancelLoader = useCallback(() => {
+    setShowLoader(false)
+  }, [])
+
+  if (!configEntry || showLoader) {
+    return <ConfigLoader onLoad={handleLoadConfig} onCancel={configEntry ? handleCancelLoader : undefined} />
   }
 
-  const questionNumber =
-    config.rounds
-      .slice(0, state.currentRoundIndex)
-      .reduce((sum, r) => sum + r.questions.length, 0) +
-    state.currentQuestionIndex +
-    1
-
-  const totalQuestions = config.rounds.reduce((sum, r) => sum + r.questions.length, 0)
-
   return (
-    <div className="app">
-      <header className="app__header">
-        <h1 className="app__title">100 к 1</h1>
-        <div className="app__meta">
-          <span className="app__round">{round.name}</span>
-          <span className="app__question-num">
-            Вопрос {questionNumber} / {totalQuestions}
-          </span>
-        </div>
-      </header>
-
-      <ScoreBoard
-        teamNames={state.teamNames}
-        teamScores={state.teamScores}
-        activeTeam={state.activeTeam}
-        roundPoints={state.roundPoints}
-        onTeamNameChange={setTeamName}
-        onSelectTeam={setActiveTeam}
-      />
-
-      <section className="app__question">
-        <p className="app__question-text">{question.text}</p>
-      </section>
-
-      <AnswerBoard
-        answers={question.answers}
-        revealedAnswers={state.revealedAnswers}
-        canToggle={state.phase !== 'game-end'}
-        onToggle={toggleAnswer}
-      />
-
-      <StrikeDisplay strikes={state.strikes} />
-
-      <GameControls
-        phase={state.phase}
-        activeTeam={state.activeTeam}
-        teamNames={state.teamNames}
-        roundPoints={state.roundPoints}
-        onStrike={addStrike}
-        onAward={awardPoints}
-        onNextQuestion={nextQuestion}
-        onReset={resetGame}
-      />
-    </div>
+    <GameView
+      key={configKey}
+      config={configEntry.config}
+      configName={configEntry.name}
+      onChangeConfig={handleChangeConfig}
+    />
   )
 }
 

@@ -46,6 +46,23 @@
     font-weight: 500;
   }
 
+  &__change-config {
+    margin-top: 0.75rem;
+    padding: 0.375rem 0.875rem;
+    border-radius: 999px;
+    background: transparent;
+    color: $color-text-muted;
+    border: 1px solid rgba($color-text-muted, 0.3);
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: color 0.15s, border-color 0.15s;
+
+    &:hover {
+      color: $color-accent-blue;
+      border-color: rgba($color-accent-blue, 0.5);
+    }
+  }
+
   &__question {
     width: 100%;
     max-width: 800px;
