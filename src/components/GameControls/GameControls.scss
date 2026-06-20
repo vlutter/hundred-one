@@ -1,0 +1,65 @@
+@use '../../styles/variables' as *;
+
+.game-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+
+  &__btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: $radius;
+    font-size: 0.9375rem;
+    font-weight: 700;
+    transition: transform 0.15s, opacity 0.15s;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-2px);
+    }
+
+    &:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    &--strike {
+      background: $color-strike;
+      color: white;
+    }
+
+    &--award {
+      background: linear-gradient(135deg, $color-primary, $color-primary-dark);
+      color: $color-bg;
+    }
+
+    &--next {
+      background: $color-accent-blue;
+      color: white;
+    }
+
+    &--reset {
+      background: transparent;
+      color: $color-text-muted;
+      border: 1px solid rgba($color-text-muted, 0.3);
+      font-size: 0.8125rem;
+      font-weight: 500;
+    }
+  }
+
+  &__hint {
+    width: 100%;
+    text-align: center;
+    color: $color-accent;
+    font-weight: 600;
+    font-size: 1rem;
+
+    &--final {
+      font-size: 1.5rem;
+      color: $color-primary;
+    }
+  }
+}

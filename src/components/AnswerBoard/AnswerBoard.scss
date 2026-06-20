@@ -1,0 +1,89 @@
+@use 'sass:color';
+@use '../../styles/variables' as *;
+
+.answer-board {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+
+  &__slot {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.875rem 1.25rem;
+    border-radius: $radius;
+    background: $color-slot;
+    border: 2px solid rgba($color-primary, 0.2);
+    color: $color-text;
+    text-align: left;
+    transition: background 0.3s, transform 0.15s, border-color 0.3s;
+    min-height: 3.5rem;
+
+    &:not(:disabled):hover {
+      background: color.adjust($color-slot, $lightness: 5%);
+      transform: translateX(4px);
+      border-color: rgba($color-primary, 0.5);
+    }
+
+    &--revealed {
+      background: $color-slot-revealed;
+      border-color: $color-primary;
+      cursor: pointer;
+      animation: reveal 0.4s ease;
+
+      &:hover:not(:disabled) {
+        background: color.adjust($color-slot-revealed, $lightness: -8%);
+        border-color: $color-accent;
+        transform: translateX(4px);
+      }
+    }
+  }
+
+  &__number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background: rgba($color-primary, 0.2);
+    color: $color-primary;
+    font-weight: 800;
+    font-size: 0.875rem;
+  }
+
+  &__text {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  &__points {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: $color-primary;
+    min-width: 2.5rem;
+    text-align: right;
+  }
+
+  &__hidden {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: rgba($color-primary, 0.4);
+    letter-spacing: 0.2em;
+  }
+}
+
+@keyframes reveal {
+  from {
+    opacity: 0;
+    transform: scaleX(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+}

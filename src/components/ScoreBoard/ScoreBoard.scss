@@ -1,0 +1,91 @@
+@use '../../styles/variables' as *;
+
+.score-board {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+
+  &__team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 1rem 1.5rem;
+    border-radius: $radius;
+    background: $color-bg-panel;
+    border: 3px solid transparent;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+    position: relative;
+
+    &--0 {
+      border-color: rgba($color-accent-blue, 0.3);
+    }
+
+    &--1 {
+      border-color: rgba($color-accent, 0.3);
+    }
+
+    &--active {
+      transform: scale(1.02);
+      box-shadow: $shadow;
+
+      &.score-board__team--0 {
+        border-color: $color-accent-blue;
+        background: linear-gradient(135deg, $color-bg-panel, rgba($color-accent-blue, 0.15));
+      }
+
+      &.score-board__team--1 {
+        border-color: $color-accent;
+        background: linear-gradient(135deg, $color-bg-panel, rgba($color-accent, 0.15));
+      }
+    }
+
+    &:hover {
+      opacity: 0.95;
+    }
+  }
+
+  &__name {
+    background: transparent;
+    border: none;
+    color: $color-text-muted;
+    font-size: 0.875rem;
+    text-align: center;
+    width: 100%;
+    outline: none;
+
+    &:focus {
+      color: $color-text;
+    }
+  }
+
+  &__score {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: $color-primary;
+    line-height: 1;
+  }
+
+  &__round-points {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.75rem;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: $color-success;
+    animation: pulse 1s ease infinite;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}

@@ -1,0 +1,65 @@
+@use './styles/variables' as *;
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  background:
+    radial-gradient(ellipse at top, rgba($color-accent-blue, 0.12) 0%, transparent 60%),
+    radial-gradient(ellipse at bottom, rgba($color-accent, 0.08) 0%, transparent 60%),
+    $color-bg;
+
+  &__header {
+    text-align: center;
+  }
+
+  &__title {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, $color-primary, #fff8dc, $color-primary);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    filter: drop-shadow(0 2px 8px rgba($color-primary, 0.3));
+  }
+
+  &__meta {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: $color-text-muted;
+  }
+
+  &__round {
+    color: $color-accent-blue;
+    font-weight: 600;
+  }
+
+  &__question-num {
+    font-weight: 500;
+  }
+
+  &__question {
+    width: 100%;
+    max-width: 800px;
+    padding: 1.25rem 1.5rem;
+    background: $color-bg-panel;
+    border-radius: $radius;
+    border: 2px solid rgba($color-primary, 0.25);
+    box-shadow: $shadow;
+  }
+
+  &__question-text {
+    font-size: clamp(1.125rem, 3vw, 1.5rem);
+    font-weight: 600;
+    text-align: center;
+    line-height: 1.4;
+  }
+}
