@@ -1,0 +1,48 @@
+name: Deploy to Ubuntu
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Deploy over SSH
+        uses: appleboy/ssh-action@v1.2.0
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username: ${{ secrets.SSH_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          port: ${{ secrets.SSH_PORT || 22 }}
+          script_stop: true
+          script: |
+            set -euo pipefail
+
+            DEPLOY_PATH="${{ secrets.DEPLOY_PATH || '/opt/hundred-one' }}"
+            cd "$DEPLOY_PATH"
+
+            if [ ! -d .git ]; then
+              echo "Directory $DEPLOY_PATH is not a git repository."
+              echo "Complete the one-time server setup from DEPLOY.md first."
+              exit 1
+            fi
+
+            git fetch origin main
+            git reset --hard origin/main
+
+            docker compose pull || true
+            docker compose up -d --build --remove-orphans
+            docker image prune -f
+
+            docker compose ps
