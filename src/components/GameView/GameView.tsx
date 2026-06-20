@@ -18,6 +18,8 @@ export function GameView({ config, configName, onChangeConfig }: GameViewProps) 
     resetGame,
     setActiveTeam,
     setTeamName,
+    setTeamScore,
+    setRoundPoints,
     toggleAnswer,
     addStrike,
     awardPoints,
@@ -85,6 +87,8 @@ export function GameView({ config, configName, onChangeConfig }: GameViewProps) 
         activeTeam={state.activeTeam}
         roundPoints={state.roundPoints}
         onTeamNameChange={setTeamName}
+        onTeamScoreChange={setTeamScore}
+        onRoundPointsChange={setRoundPoints}
         onSelectTeam={setActiveTeam}
       />
 

@@ -84,6 +84,21 @@ export function useGameState(config: GameConfig) {
     })
   }, [])
 
+  const setTeamScore = useCallback((team: TeamIndex, score: number) => {
+    setState((prev) => {
+      const teamScores = [...prev.teamScores] as [number, number]
+      teamScores[team] = Math.max(0, Math.round(score))
+      return { ...prev, teamScores }
+    })
+  }, [])
+
+  const setRoundPoints = useCallback((points: number) => {
+    setState((prev) => ({
+      ...prev,
+      roundPoints: Math.max(0, Math.round(points)),
+    }))
+  }, [])
+
   const toggleAnswer = useCallback((index: number) => {
     setState((prev) => {
       if (prev.phase === 'game-end') return prev
@@ -213,6 +228,8 @@ export function useGameState(config: GameConfig) {
     resetGame,
     setActiveTeam,
     setTeamName,
+    setTeamScore,
+    setRoundPoints,
     toggleAnswer,
     addStrike,
     awardPoints,
